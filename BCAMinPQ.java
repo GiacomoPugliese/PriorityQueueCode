@@ -17,21 +17,21 @@ public class BCAMinPQ<E extends Comparable<E>> implements BCAQueue<E> {
    * Return index of the left child of element at index i.
    */
   private int leftChildOf(int i){
-    return -1 /* TODO */;
+    return 2*i;
   }
 
   /**
    * Return index of the right child of element at index i.
    */
   private int rightChildOf(int i){
-    return -1 /* TODO */;
+    return 2*i+1;
   }
 
   /**
    * Return index of the parent of element at index i.
    */
   private int parentOf(int i){
-    return -1 /* TODO */;
+    return i/2;
   }
 
   /**
@@ -50,12 +50,15 @@ public class BCAMinPQ<E extends Comparable<E>> implements BCAQueue<E> {
    * is the only element out of place.
    */
   private void pushUp(int i) {
-    while ( true  /* TODO continue as long as i is not the root index  */) {
+    while ( i > 1) {
 
-      if ( false /* TODO stop if parent is smaller!*/)  /**/
+      if ( heap.get(i/2).compareTo(heap.get(i)) < 0 /* TODO stop if parent is smaller!*/)  /**/
         break;
 
       /* TODO Push element at i up!*/
+      swap(i, parentOf(i));
+
+      i = parentOf(i);
 
     }
   }
@@ -63,6 +66,9 @@ public class BCAMinPQ<E extends Comparable<E>> implements BCAQueue<E> {
   /** Adds a new element to the the queue. */
   public void enqueue(E o){
     /* TODO Add new element to heap, maintaining both shape and heap properties*/
+    heap.add(o);
+
+    pushUp(heap.size()-1);
   }
 
   /* Try BCAMinPQTest now! You should pass 0.1 to 0.6*/
@@ -74,7 +80,7 @@ public class BCAMinPQ<E extends Comparable<E>> implements BCAQueue<E> {
    */
   public E peek(){
     /* TODO Return minimum element of heap*/
-    return null;
+    return heap.get(1);
   }
 
   /* Try BCAMinPQTest now! You should pass 1a*/
@@ -86,7 +92,7 @@ public class BCAMinPQ<E extends Comparable<E>> implements BCAQueue<E> {
    * is the only element out of place.
    */
   private void pushDown(int i) {
-    while( true /* TODO continue as long as i has at least 1 child  */) {
+    while( leftChildOf(i) < heap.size() || rightChildOf(i) < heap.size())/* TODO continue as long as i has at least 1 child  */ {
       /* TODO pick the smaller child (there might only be one!) */
 
       if ( false /* TODO stop if i is smaller than its children!*/)
