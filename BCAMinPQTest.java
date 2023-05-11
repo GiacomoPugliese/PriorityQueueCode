@@ -27,8 +27,6 @@ public class BCAMinPQTest {
 			}
 		}
 
-
-
 		if (pq.peek().equals(-16))
 			System.out.println("Passed 1a (peek)");
 		else
