@@ -50,40 +50,30 @@ public class BCAMinPQ<E extends Comparable<E>> implements BCAQueue<E> {
    * is the only element out of place.
    */
   private void pushUp(int i) {
-    while ( i > 1) {
-
-      if ( heap.get(i/2).compareTo(heap.get(i)) < 0 /* TODO stop if parent is smaller!*/)  /**/
+    while (i > 1) {
+      if (heap.get(i/2).compareTo(heap.get(i)) < 0)
         break;
 
-      /* TODO Push element at i up!*/
       swap(i, parentOf(i));
-
       i = parentOf(i);
-
     }
   }
 
-  /** Adds a new element to the the queue. */
+  /** Adds a new element to the queue. */
   public void enqueue(E o){
-    /* TODO Add new element to heap, maintaining both shape and heap properties*/
     heap.add(o);
-
     pushUp(heap.size()-1);
   }
-
-  /* Try BCAMinPQTest now! You should pass 0.1 to 0.6*/
-
 
   /**
    * Returns the next item from the queue without popping it.
    * If no item, returns null
    */
   public E peek(){
-    /* TODO Return minimum element of heap*/
+    if (isEmpty())
+      return null;
     return heap.get(1);
   }
-
-  /* Try BCAMinPQTest now! You should pass 1a*/
 
   /**
    * Push down the element at index i (swapping with its smallest child)
@@ -92,36 +82,37 @@ public class BCAMinPQ<E extends Comparable<E>> implements BCAQueue<E> {
    * is the only element out of place.
    */
   private void pushDown(int i) {
-    while( leftChildOf(i) < heap.size() || rightChildOf(i) < heap.size())/* TODO continue as long as i has at least 1 child  */ {
-      /* TODO pick the smaller child (there might only be one!) */
+    while (leftChildOf(i) < heap.size()) {
+      int smallestChild = leftChildOf(i);
+      if (rightChildOf(i) < heap.size() && heap.get(rightChildOf(i)).compareTo(heap.get(smallestChild)) < 0)
+        smallestChild = rightChildOf(i);
 
-      if ( false /* TODO stop if i is smaller than its children!*/)
+      if (heap.get(i).compareTo(heap.get(smallestChild)) < 0)
         break;
 
-      /* TODO Push element at i down!*/
+      swap(i, smallestChild);
+      i = smallestChild;
     }
   }
 
   /**
    * Removes the smallest item from the queue and returns it.
    *
-   * @exception NoSuchElementException
-   *                if the queue is empty.
+   * @exception NoSuchElementException if the queue is empty.
    */
   public E dequeue(){
-
     if (isEmpty())
       throw new NoSuchElementException("MinPQ is empty");
 
-    /* TODO Remove minimum element in heap, maintaining both shape and heap properties*/
-    /* HINT: Swap minimum element and last element FIRST! */
+    E minItem = heap.get(1);
+    swap(1, heap.size()-1);
+    heap.remove(heap.size()-1);
+    pushDown(1);
 
-    return null;
+    return minItem;
   }
 
-  /* Try BCAMinPQTest now! You should pass the remaining tests 1b through 8, and HeapSort*/
-
-  /**
+    /**
    * Returns whether the queue is empty or not.
    */
   public boolean isEmpty(){
@@ -136,9 +127,11 @@ public class BCAMinPQ<E extends Comparable<E>> implements BCAQueue<E> {
   }
 
   /**
-   * Return item at index i
+   * Return item at index i.
    */
   public E get(int i) {
     return heap.get(i);
   }
 }
+
+ 
